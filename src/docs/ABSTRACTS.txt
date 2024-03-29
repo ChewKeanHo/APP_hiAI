@@ -1,0 +1,26 @@
+################################################################################
+# NOTE                                                                         #
+#                                                                              #
+# This is a line-by-line long package descripton usually append after the      #
+# pitch or acting independently. You can write as long as you want as long as  #
+# it complies to the following rules:                                          #
+#       (1) Keep it text-form only; AND                                        #
+#       (2) Max 69 characters per line (DEB, RPM, and Citation requires it);   #
+#           AND                                                                #
+#       (3) Keep it ASCII for backward compatibilities purposes.               #
+#                                                                              #
+# You should write the long description of the project repository like an      #
+# abstract: introducing, specify the problem, actions, and ends with what to   #
+# to exect from exploring it.                                                  #
+################################################################################
+#                                                                  🠳 Max       #
+################################################################################
+Since Google made its Google's Gemini AI Advanced Ultra for 2
+months trial with API supports for developer, it's better not to
+waste the opportunity. With REST API readily available, it's very
+easy to to turn a dumb computer with online access into an AI
+supported device via large language model (LLM) prompt.
+
+This project is to make LLM AI prompt available for all the current
+computing devices via interacting with API so that one does not
+need to overly dependent on a graphical user interface alone.
