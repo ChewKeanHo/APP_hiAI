@@ -1,6 +1,7 @@
 #####################
 # User defined
 #####################
+src/CONFIG.toml
 
 #####################
 # Standard FHS
