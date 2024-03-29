@@ -23,7 +23,46 @@ Some good business reasons why using AutomataCI:
 
 
 ## How-tos, Documentations & Specifications
-TBD
+
+To use HiAI, you need to first setup 1-time `CONFIG.toml` file:
+
+```
+# UNIX (Linux & MacOS) - POSIX Shell
+$ ./hiAI.sh.ps1 --create-config path/to/file.toml
+
+# WINDOWS - PowerShell
+$ powershell.exe -noprofile `
+	-executionpolicy bypass `
+	-Command "& .\hiAI.sh.ps1 --create-config 'path\to\file.toml'"
+
+
+# update the path/to/file.toml especially with the API token.
+```
+
+Once done, you may proceed to execute it:
+
+```
+# UNIX (Linux & MacOS) - POSIX Shell
+$ hiAI.sh.ps1 --config path/to/file.toml --text2text "...your prompt..."
+
+
+# WINDOWS - PowerShell
+$ powershell.exe -noprofile `
+	-executionpolicy bypass `
+	-Command "& .\hiAI.sh.ps1 --config path\to\file.toml --text2text `"...your prompt...`""
+```
+
+In any cases, if you need an on-screen assistances:
+```
+# UNIX (Linux & MacOS) - POSIX Shell
+$ hiAI.sh.ps1 --help
+
+
+# WINDOWS - PowerShell
+$ powershell.exe -noprofile `
+	-executionpolicy bypass `
+	-Command "& .\hiAI.sh.ps1 --help"
+```
 
 
 
