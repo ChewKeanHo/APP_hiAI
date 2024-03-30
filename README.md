@@ -2,7 +2,7 @@
 [![hiAI](src/icons/banner_1200x330.svg)](#holloways-hiai)
 
 A local terminal polygot (POSIX Shell x PowerShell) bridging LLM AI prompt
-interaction capabilities.
+interaction capabilities directly to your computer!
 
 Turn every computer's terminal into an interactive AI prompt.
 
