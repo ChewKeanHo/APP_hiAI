@@ -1,10 +1,12 @@
 # Holloway's HiAI
-[![hiAI](src/icons/banner_1200x330.svg)](#holloway-s-hiAI)
+[![hiAI](src/icons/banner_1200x330.svg)](#holloways-hiai)
 
 A local terminal polygot (POSIX Shell x PowerShell) bridging LLM AI prompt
 interaction capabilities.
 
 Turn every computer's terminal into an interactive AI prompt.
+
+[![hiAi-demo-debian](src/screenshots/hiAI-demo-debian.gif)](#holloways-hiai)
 
 
 
@@ -14,10 +16,11 @@ Turn every computer's terminal into an interactive AI prompt.
 Some good business reasons why using AutomataCI:
 
 1. **Use AI prompt straight from the terminal** - No need to visit here and
-   there.
+   there just to use AI prompt.
 2. **Simple and straight forward** - Frankly, it's created to resolve some AI
     prompt's buggy UI.
 3. **Steadily improvable** - Will continue to improve over time.
+4. **Programmable** - I'm so done with copy-pasting prompt constructors.
 
 
 
