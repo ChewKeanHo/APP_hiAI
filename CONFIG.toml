@@ -36,7 +36,7 @@ PROJECT_SKU_TITLECASE = "Holloway-hiAI"
 # must be a reversed domain with no dash ('-') and underscore ('_'). For GitHub
 # projects, it's advisable to use 'io.github.[owner].[project]' format instead
 # to avoid naming conflict.
-PROJECT_APP_ID = "com.github.chewkeanho.hiai"
+PROJECT_APP_ID = "com.github.chewkeanho.app_hiai"
 
 
 # PRODUCT_APP_UUID
@@ -141,7 +141,7 @@ PROJECT_CONTACT_WEBSITE = "https://www.hollowaykeanho.com/"
 #
 # Example:
 #     1. GitHub Packages : https://github.com/OWNER/REPO
-PROJECT_SOURCE_URL = "https://github.com/ChewKeanHo/hiAI"
+PROJECT_SOURCE_URL = "https://github.com/ChewKeanHo/APP_hiAI"
 
 
 # AUTOMATACI_LANG
@@ -533,7 +533,7 @@ PROJECT_REPREPRO_ARCH = ""
 # The git repository for publishing all the packages using static file sharing
 # (e.g. .deb repo, .rpm repo, flatpak repo, etc). This URL shall be git cloned
 # as the PROJECT_PATH_RELEASE directory.
-PROJECT_STATIC_REPO = "git@github.com:ChewKeanHo/hiAI.wiki.git"
+PROJECT_STATIC_REPO = "git@github.com:ChewKeanHo/APP_hiAI.wiki.git"
 
 
 # PROJECT_STATIC_REPO_KEY
@@ -573,7 +573,7 @@ PROJECT_STATIC_REPO_DIRECTORY = "static"
 # The public facing base URL for accessing the published static repo. This URL
 # shall be used to construct the final user instructions across various
 # distribution ecosystems.
-PROJECT_STATIC_URL = "https://github.com/ChewKeanHo/hiAI/wiki/"
+PROJECT_STATIC_URL = "https://github.com/ChewKeanHo/APP_hiAI/wiki/"
 
 
 # PROJECT_CONTAINER_REGISTRY
@@ -618,7 +618,7 @@ PROJECT_HOMEBREW_DIRECTORY = "homebrew"
 # use for constructing the 'url' value.
 #
 # NOTE: Please avoid ending with the URL slash.
-PROJECT_HOMEBREW_SOURCE_URL = "https://github.com/ChewKeanHo/hiAI/releases/download"
+PROJECT_HOMEBREW_SOURCE_URL = "https://github.com/ChewKeanHo/Collections/releases/download/store"
 
 
 # PROJECT_CHOCOLATEY_REPO
@@ -649,13 +649,13 @@ PROJECT_CHOCOLATEY_DIRECTORY = "chocolatey"
 # Chocolatey use for constructing the 'url' value.
 #
 # NOTE: Please avoid ending with the URL slash.
-PROJECT_CHOCOLATEY_SOURCE_URL = "https://github.com/ChewKeanHo/hiAI/releases/download"
+PROJECT_CHOCOLATEY_SOURCE_URL = "https://github.com/ChewKeanHo/Collections/releases/download/store"
 
 
 # PROJECT_DOCS_REPO
 # The git repository for publishing all the docs web artifacts. This URL shall
 # be git cloned into the PROJECT_PATH_RELEASE directory.
-PROJECT_DOCS_REPO = "git@github.com:ChewKeanHo/hiAI.git"
+PROJECT_DOCS_REPO = "git@github.com:ChewKeanHo/APP_hiAI.git"
 
 
 # PROJECT_DOCS_REPO_KEY
@@ -679,7 +679,7 @@ PROJECT_DOCS_REPO_DIRECTORY = "docs"
 # It is made available in-case of publication needs.
 #
 # NOTE: Please avoid ending with the URL slash.
-PROJECT_DOCS_SOURCE_URL = "https://github.io/ChewKeanHo/hiAI"
+PROJECT_DOCS_SOURCE_URL = "https://github.io/ChewKeanHo/APP_hiAI"
 
 
 
