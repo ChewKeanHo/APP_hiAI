@@ -25,6 +25,13 @@ Some good business reasons why using AutomataCI:
 
 
 
+## Supported AI Vendors
+
+1. [Google AI](https://ai.google.dev/docs/gemini_api_overview) - [Get API Token](https://gemini.google.com/app)
+
+
+
+
 ## How-tos, Documentations & Specifications
 
 To use HiAI, you need to first setup 1-time `CONFIG.toml` file:
