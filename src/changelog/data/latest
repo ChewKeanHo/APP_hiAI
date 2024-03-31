@@ -1,0 +1,6 @@
+CONFIG.toml: updated URI to match upstream repository address
+README.md: updated pitch line to be more direct.
+README.md: added supported AI vendors list
+root: added demo screenshot
+README.md: updated with how-tos guides
+src: developed first prototype

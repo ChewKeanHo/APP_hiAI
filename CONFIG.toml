@@ -20,14 +20,14 @@
 # This is the known product ID used as a command, marketing brand, etc.
 # It should be in lowercase and should not be using dash ('-'),
 # underscore ('_'), and space (' ') for maximum compatibility.
-PROJECT_SKU = "holloway-hiai"
+PROJECT_SKU = "hollowayhiai"
 
 
 # PROJECT_SKU_TITLECASE
 # The titlecase version of PROJECT_SKU. Used in certain packager control scripts
 # like Homebrew. Conditions is the same as PROJECT_SKU except it is in the
 # TitleCase representation.
-PROJECT_SKU_TITLECASE = "Holloway-hiAI"
+PROJECT_SKU_TITLECASE = "hollowayHIAI"
 
 
 # PROJECT_APP_ID
@@ -66,13 +66,13 @@ PRODUCT_APP_UUID = "6E6006CC-0819-D7AE-80ED-B7F52077294F"
 # PROJECT_NAME
 # This is the name of the product used in documentation, marketing addresses
 # etc only. For programming purposes, PROJECT_SKU is used instead.
-PROJECT_NAME = "Hi AI!"
+PROJECT_NAME = "Holloway's 'Hi AI!'"
 
 
 # PROJECT_PITCH
 # A short elevator pitch about the project used as a short description. Max
 # Max: 60 characters.
-PROJECT_PITCH = ""
+PROJECT_PITCH = "Turn every computer's terminal into an interactive AI prompt."
 
 
 # PROJECT_VERSION

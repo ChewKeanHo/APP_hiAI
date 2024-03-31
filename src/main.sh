@@ -306,7 +306,7 @@ GOOGLEAI_Gemini_Query_Text_To_Text() {
 
 
         # execute
-        curl --progress-bar --header 'Content-Type: application/json' --data "{
+        curl --no-progress-meter --header 'Content-Type: application/json' --data "{
         \"contents\": [{
                 \"parts\":[{
                         \"text\": \"${1}\"
@@ -364,7 +364,7 @@ GOOGLEAI_Is_Available() {
 # execute command
 __query=""
 __config_path=""
-___mode="t2t"
+__mode=""
 
 
 ## parse parameters
@@ -553,7 +553,7 @@ GOOGLEAI_BLOCK_HARASSMENT = 'BLOCK_NONE'
                 fi
                 ;;
         --text2text)
-                ___mode="t2t"
+                __mode="t2t"
                 if [ ! -z "$2" ] && [ "$(printf "%.1s" "$2")" != "-" ]; then
                         __query="$2"
                         shift 1
@@ -562,6 +562,13 @@ GOOGLEAI_BLOCK_HARASSMENT = 'BLOCK_NONE'
         esac
         shift 1
 done
+
+
+## check run mode
+if [ $(STRINGS_Is_Empty "$__mode") -eq 0 ]; then
+        Print_Status error "No action given. Please run --help for assistances.\n"
+        exit 1
+fi
 
 
 ## parse configurations file
@@ -602,7 +609,7 @@ IFS="$__old_IFS" && unset __old_IFS
 ## communicate with AI
 case "$AI_VENDOR" in
 GOOGLEAI)
-        if [ "$___mode" = "t2i" ]; then
+        if [ "$__mode" = "t2i" ]; then
                 ## text-to-image
                 Print_Status info "text-to-image mode coming soon.\n"
                 exit 1
@@ -620,7 +627,7 @@ GOOGLEAI)
         if [ $(STRINGS_Is_Empty "$___response") -ne 0 ]; then
                 OS_Is_Command_Available "jq"
                 if [ $? -eq 0 ]; then
-                        ___response="$(printf -- "%b" "$___response" \
+                        ___response="$(printf -- "%s" "$___response" \
                                 | jq --raw-output .candidates[0].content.parts[0].text)"
                 fi
         fi

@@ -330,7 +330,7 @@ function GOOGLEAI-Gemini-Query-Text-To-Text() {
 
 
 	# execute
-	return "$(curl.exe --progress-bar --header 'Content-Type: application/json' --data @"
+	return "$(curl.exe --no-progress-meter --header 'Content-Type: application/json' --data @"
 {
 	"contents" = [{
 		"parts": [{
@@ -382,9 +382,10 @@ function GOOGLEAI-Is-Available {
 # execute command
 $__query = ""
 $__config_path = ""
-$__mode = "t2t"
+$__mode = ""
 
 
+## parse parameters
 for ($i = 0; $i -lt $args.Length; $i++) {
 	switch ($args[$i]) {
 	{ $_ -in "-h", "--help", "help" } {
@@ -413,7 +414,7 @@ Quick Start:
                                 operation. If the source is missing, this
                                 function will fail.
 --text2-text [STRING]           operate text-to-text prompt.
-
+`n
 "@
 		exit 0
 	} "--create-config" {
@@ -576,6 +577,13 @@ GOOGLEAI_BLOCK_HARASSMENT = 'BLOCK_NONE'
 		}
 	} default {
 	}}
+}
+
+
+## check run mode
+if ($(STRINGS-Is-Empty "${__mode}") -eq 0) {
+	$null = Print-Status "error" "No action given. Please run --help for assistances.`n"
+	exit 1
 }
 
 

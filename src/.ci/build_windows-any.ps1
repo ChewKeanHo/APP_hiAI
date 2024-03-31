@@ -26,7 +26,7 @@ if (-not (Test-Path -Path $env:PROJECT_PATH_ROOT)) {
 
 
 
-# safety checking control surfaces
+# execute
 $null = I18N-Check-Availability "CHANGELOG"
 $___process = CHANGELOG-Is-Available
 if ($___process -ne 0) {
@@ -37,7 +37,174 @@ if ($___process -ne 0) {
 
 
 
-# execute
+# assemble polygot script
+$___workspace = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_TEMP}\build-${env:PROJECT_SKU_TITLECASE}"
+$null = FS-Remake-Directory "${___workspace}"
+
+
+$___dest = "${___workspace}\${env:PROJECT_SKU_TITLECASE}.sh.ps1"
+$null = I18N-Create "${___dest}"
+$___process = FS-Write-File "${___dest}" @"
+echo \" <<'RUN_AS_BATCH' >/dev/null ">NUL "\" \``" <#"
+@ECHO OFF
+REM LICENSE CLAUSES HERE
+REM ----------------------------------------------------------------------------
+
+
+
+
+REM ############################################################################
+REM # Windows BATCH Codes                                                      #
+REM ############################################################################
+where /q powershell
+if errorlevel 1 (
+        echo "ERROR: missing powershell facility."
+        exit /b 1
+)
+
+copy /Y "%~nx0" "%~n0.ps1" >nul
+timeout /t 1 /nobreak >nul
+powershell -executionpolicy remotesigned -Command "& '.\%~n0.ps1' %*"
+start /b "" cmd /c del "%~f0" & exit /b %errorcode%
+REM ############################################################################
+REM # Windows BATCH Codes                                                      #
+REM ############################################################################
+RUN_AS_BATCH
+#> | Out-Null
+
+
+
+
+echo \" <<'RUN_AS_POWERSHELL' >/dev/null # " | Out-Null
+################################################################################
+# Windows POWERSHELL Codes                                                     #
+################################################################################
+"@
+if ($___process -ne 0) {
+	$null = I18N-Create-Failed
+	return 1
+}
+
+## append src/main.ps1
+foreach ($__line in (Get-Content "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}\main.ps1")) {
+	$___process = STRINGS-Is-Empty "${__line}"
+	if ($___process -eq 0) {
+		continue
+	}
+
+	$null = Add-Content -Path $___dest -Value $__line
+}
+
+## to posix shell header
+$___process = FS-Append-File "${___dest}" @"
+################################################################################
+# Windows POWERSHELL Codes                                                     #
+################################################################################
+exit
+<#
+RUN_AS_POWERSHELL
+
+
+
+
+################################################################################
+# Unix Main Codes                                                              #
+################################################################################
+"@
+if ($___process -ne 0) {
+	$null = I18N-Create-Failed
+	return 1
+}
+
+## append src/main.sh
+foreach ($__line in (Get-Content "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}\main.sh")) {
+	$___process = STRINGS-Is-Empty "${__line}"
+	if ($___process -eq 0) {
+		continue
+	}
+
+	$null = Add-Content -Path $___dest -Value $__line
+}
+
+## close
+$___process = FS-Append-File "${___dest}" @"
+################################################################################
+# Unix Main Codes                                                              #
+################################################################################
+exit `$?
+#>
+"@
+if ($___process -ne 0) {
+	$null = I18N-Create-Failed
+	return 1
+}
+
+$___process = FS-Is-File "${___dest}"
+if ($___process -ne 0) {
+	$null = I18N-Create-Failed
+	return 1
+}
+
+## test
+$___source = "${___dest}"
+
+$null = I18N-Test "${___source} --help"
+$___process = OS-Exec "powershell" @"
+-noprofile -executionpolicy bypass -Command "& ${___source} --help"
+"@
+if ($___process -ne 0) {
+	$null = I18N-Test-Failed
+	return 1
+}
+
+$___config = "${___workspace}\CONFIG.toml"
+$null = I18N-Test "${___source} --create-config ${___config}"
+$___process = OS-Exec "powershell" @"
+-noprofile -executionpolicy bypass -Command "& ${___source} --create-config ${___config}"
+"@
+if ($___process -ne 0) {
+	$null = I18N-Test-Failed
+	return 1
+}
+
+$___process = FS-Is-File "${___config}"
+if ($___process -ne 0) {
+	$null = I18N-Test-Failed
+	return 1
+}
+
+$null = I18N-Test "${___source} --text2text"
+$null = I18N-Newline
+$null = I18N-Newline
+$null = Set-Item -Path "env:GOOGLEAI_API_TOKEN" -Value "Some_Dummy_Value"
+$___process = OS-Exec "powershell" @"
+-noprofile -executionpolicy bypass -Command "& ${___source} --config ${___config} --text2text "What are you?"
+"@
+if ($___process -ne 0) {
+	$null = I18N-Test-Failed
+	return 1
+}
+$null = I18N-Newline
+$null = I18N-Newline
+
+
+
+
+# export
+$___dest = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}\${env:PROJECT_SKU_TITLECASE}_any-any.sh.ps1"
+$null = FS-Make-Housing-Directory "${___dest}"
+
+$null = I18N-Export "${___dest}"
+$___process = FS-Copy-File "${___source}" "${___dest}"
+if ($___process -ne 0) {
+	$null = I18N-Export-Failed
+	return 1
+}
+
+
+
+
+# build changelog entries
 $__file = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}\changelog"
 $null = I18N-Create "${env:PROJECT_VERSION} DATA CHANGELOG"
 $___process = CHANGELOG-Build-DATA-Entry $__file

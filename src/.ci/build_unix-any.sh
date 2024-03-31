@@ -27,7 +27,7 @@ fi
 
 
 
-# safety checking control surfaces
+# execute
 I18N_Check_Availability 'CHANGELOG'
 CHANGELOG_Is_Available
 if [ $? -ne 0 ]; then
@@ -38,7 +38,171 @@ fi
 
 
 
-# execute
+# assemble polygot script
+___workspace="${PROJECT_PATH_ROOT}/${PROJECT_PATH_TEMP}/build-${PROJECT_SKU_TITLECASE}"
+FS_Remake_Directory "$___workspace"
+
+
+___dest="${___workspace}/${PROJECT_SKU_TITLECASE}.sh.ps1"
+I18N_Create "$___dest"
+FS_Write_File "$___dest" "\
+echo \\\" <<'RUN_AS_BATCH' >/dev/null \">NUL \"\\\" \\\`\" <#\"
+@ECHO OFF
+REM LICENSE CLAUSES HERE
+REM ----------------------------------------------------------------------------
+
+
+
+
+REM ############################################################################
+REM # Windows BATCH Codes                                                      #
+REM ############################################################################
+where /q powershell
+if errorlevel 1 (
+        echo \"ERROR: missing powershell facility.\"
+        exit /b 1
+)
+
+copy /Y \"%~nx0\" \"%~n0.ps1\" >nul
+timeout /t 1 /nobreak >nul
+powershell -executionpolicy remotesigned -Command \"& '.\\%~n0.ps1' %*\"
+start /b \"\" cmd /c del \"%~f0\" & exit /b %errorcode%
+REM ############################################################################
+REM # Windows BATCH Codes                                                      #
+REM ############################################################################
+RUN_AS_BATCH
+#> | Out-Null
+
+
+
+
+echo \\\" <<'RUN_AS_POWERSHELL' >/dev/null # \" | Out-Null
+################################################################################
+# Windows POWERSHELL Codes                                                     #
+################################################################################
+"
+if [ $? -ne 0 ]; then
+        I18N_Create_Failed
+        return 1
+fi
+
+## append src/main.ps1
+___old_IFS="$IFS"
+while IFS= read -r __line || [ -n "$__line" ]; do
+        if [ "$(STRINGS_Is_Empty "$__line")" -eq 0 ]; then
+                continue
+        fi
+
+        printf -- "%s\n" "$__line" >> "$___dest"
+done < "${PROJECT_PATH_ROOT}/${PROJECT_PATH_SOURCE}/main.ps1"
+
+## to posix shell header
+FS_Append_File "$___dest" "\
+################################################################################
+# Windows POWERSHELL Codes                                                     #
+################################################################################
+exit
+<#
+RUN_AS_POWERSHELL
+
+
+
+
+################################################################################
+# Unix Main Codes                                                              #
+################################################################################
+"
+if [ $? -ne 0 ]; then
+        I18N_Create_Failed
+        return 1
+fi
+
+## append src/main.sh
+___old_IFS="$IFS"
+while IFS= read -r __line || [ -n "$__line" ]; do
+        if [ "$(STRINGS_Is_Empty "$__line")" -eq 0 ]; then
+                continue
+        fi
+
+        printf -- "%s\n" "$__line" >> "$___dest"
+done < "${PROJECT_PATH_ROOT}/${PROJECT_PATH_SOURCE}/main.sh"
+IFS="$___old_IFS" && unset __old_IFS
+
+## close
+FS_Append_File "$___dest" "\
+################################################################################
+# Unix Main Codes                                                              #
+################################################################################
+exit \$?
+#>
+"
+if [ $? -ne 0 ]; then
+        I18N_Create_Failed
+        return 1
+fi
+
+FS_Is_File "$___dest"
+if [ $? -ne 0 ]; then
+        I18N_Create_Failed
+        return 1
+fi
+chmod +x "$___dest"
+
+## test
+___source="$___dest"
+I18N_Test "$___source --help"
+
+eval "${___source} --help"
+if [ $? -ne 0 ]; then
+        I18N_Test_Failed
+        return 1
+fi
+
+___config="${___workspace}/CONFIG.toml"
+I18N_Test "$___source --create-config ${___config}"
+eval "${___source} --create-config '${___config}'"
+if [ $? -ne 0 ]; then
+        I18N_Test_Failed
+        return 1
+fi
+
+FS_Is_File "$___config"
+if [ $? -ne 0 ]; then
+        I18N_Test_Failed
+        return 1
+fi
+
+
+I18N_Test "$___source --text2text"
+I18N_Newline
+I18N_Newline
+GOOGLE_API_TOKEN="${GOOGLE_API_TOKEN:-"Some_Dummy_Value"}"
+eval "${___source} --config '${___config}' --text2text 'What are you?'"
+if [ $? -ne 0 ]; then
+        I18N_Test_Failed
+        return 1
+fi
+I18N_Newline
+I18N_Newline
+
+
+
+
+# export
+___dest="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${PROJECT_SKU_TITLECASE}_any-any.sh.ps1"
+FS_Make_Housing_Directory "$___dest"
+
+I18N_Export "$___dest"
+FS_Copy_File "$___source" "$___dest"
+if [ $? -ne 0 ]; then
+        I18N_Export_Failed
+        return 1
+fi
+
+
+
+
+# build changelog entries
 __file="${PROJECT_PATH_ROOT}/${PROJECT_PATH_SOURCE}/changelog"
 I18N_Create "${PROJECT_VERSION} DATA CHANGELOG"
 CHANGELOG_Build_Data_Entry "$__file"
