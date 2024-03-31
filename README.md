@@ -67,22 +67,7 @@ works.
 
 
 
-### Docker / Podman
-
-Please refer to [GitHub Packages Section](https://github.com/ChewKeanHo/APP_hiAI/pkgs/container/hollowayhiai).
-
-
-
-### Plain Script / Windows
-
-Use the `tar.gz` package or `zip` package on Windows OS.
-
-Note that the command to use is: `hollowayhiai_[OS]-[ARCH].sh.ps1` instead of
-the `hollowayHIAI` sine you're executing directly from the script.
-
-
-
-### Homebrew
+### Homebrew (MacOS)
 
 *Coming Soon*
 
@@ -91,6 +76,21 @@ the `hollowayHIAI` sine you're executing directly from the script.
 ### Chocolatey (Windows)
 
 *Coming Soon*
+
+
+
+### Docker / Podman
+
+Please refer to [GitHub Packages Section](https://github.com/ChewKeanHo/APP_hiAI/pkgs/container/hollowayhiai).
+
+
+
+### Plain Script
+
+Use the `tar.gz` package or `zip` package on Windows OS.
+
+Note that the command to use is: `hollowayhiai_[OS]-[ARCH].sh.ps1` instead of
+the `hollowayHIAI` sine you're executing directly from the script.
 
 
 
