@@ -1,3 +1,5 @@
+automataCI: performed early patched to archive CI job algorithm
+src: implemented polygot script build alogrithm
 CONFIG.toml: updated URI to match upstream repository address
 README.md: updated pitch line to be more direct.
 README.md: added supported AI vendors list

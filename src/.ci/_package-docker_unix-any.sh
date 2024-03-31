@@ -22,6 +22,7 @@ fi
 
 . "${LIBS_AUTOMATACI}/services/io/fs.sh"
 . "${LIBS_AUTOMATACI}/services/io/strings.sh"
+. "${LIBS_AUTOMATACI}/services/i18n/translations.sh"
 
 
 
@@ -53,44 +54,57 @@ PACKAGE_Assemble_DOCKER_Content() {
                 return 10 # not applicable
         elif [ $(FS_Is_Target_A_MSI "$_target") -eq 0 ]; then
                 return 10 # not applicable
+        elif [ $(FS_Is_Target_A_PDF "$_target") -eq 0 ]; then
+                return 10 # not applicable
         fi
 
         case "$_target_os" in
-        linux|windows)
+        linux)
+                ;;
+        any)
+                _target_os="$PROJECT_OS"
                 ;;
         *)
-                return 10
+                return 10 # not applicable
+                ;;
+        esac
+
+        case "$_target_arch" in
+        386|amd64|arm64|arm|s390x|ppc64le)
+                ;;
+        any)
+                _target_arch="$PROJECT_ARCH"
+                ;;
+        *)
+                return 10 # not applicable
                 ;;
         esac
 
 
         # assemble the package
-        FS_Copy_File "$_target" "${_directory}/${PROJECT_SKU}"
+        ___dest="${_directory}/${PROJECT_SKU}"
+        I18N_Assemble "$_target" "$___dest"
+        FS_Copy_File "$_target" "$___dest"
         if [ $? -ne 0 ]; then
+                I18N_Assemble_Failed
                 return 1
         fi
 
-        FS_Touch_File "${_directory}/.blank"
+        ___dest="${_directory}/.blank"
+        I18N_Assemble "$_target" "$___dest"
+        FS_Copy_File "$_target" "$___dest"
         if [ $? -ne 0 ]; then
+                I18N_Assemble_Failed
                 return 1
         fi
 
 
         # generate the Dockerfile
-        FS_Write_File "${_directory}/Dockerfile" "\
+        ___dest="${_directory}/Dockerfile"
+        I18N_Create "$___dest"
+        FS_Write_File "$___dest" "\
 # Defining baseline image
-"
-        if [ "$_target_os" = "windows" ]; then
-                FS_Append_File "${_directory}/Dockerfile" "\
-FROM --platform=${_target_os}/${_target_arch} mcr.microsoft.com/windows/nanoserver:ltsc2022
-"
-        else
-                FS_Append_File "${_directory}/Dockerfile" "\
-FROM --platform=${_target_os}/${_target_arch} busybox:latest
-"
-        fi
-
-        FS_Append_File "${_directory}/Dockerfile" "\
+FROM --platform=${_target_os}/${_target_arch} linuxcontainers/debian-slim:latest
 LABEL org.opencontainers.image.title=\"${PROJECT_NAME}\"
 LABEL org.opencontainers.image.description=\"${PROJECT_PITCH}\"
 LABEL org.opencontainers.image.authors=\"${PROJECT_CONTACT_NAME} <${PROJECT_CONTACT_EMAIL}>\"
@@ -98,20 +112,32 @@ LABEL org.opencontainers.image.version=\"${PROJECT_VERSION}\"
 LABEL org.opencontainers.image.revision=\"${PROJECT_CADENCE}\"
 LABEL org.opencontainers.image.licenses=\"${PROJECT_LICENSE}\"
 "
+        if [ $? -ne 0 ]; then
+                I18N_Create_Failed
+                return 1
+        fi
 
         if [ $(STRINGS_Is_Empty "$PROJECT_CONTACT_WEBSITE") -ne 0 ]; then
-                FS_Append_File "${_directory}/Dockerfile" "\
+                FS_Append_File "$___dest" "\
 LABEL org.opencontainers.image.url=\"${PROJECT_CONTACT_WEBSITE}\"
 "
+                if [ $? -ne 0 ]; then
+                        I18N_Create_Failed
+                        return 1
+                fi
         fi
 
         if [ $(STRINGS_Is_Empty "$PROJECT_SOURCE_URL") -ne 0 ]; then
-                FS_Append_File "${_directory}/Dockerfile" "\
+                FS_Append_File "$___dest" "\
 LABEL org.opencontainers.image.source=\"${PROJECT_SOURCE_URL}\"
 "
+                if [ $? -ne 0 ]; then
+                        I18N_Create_Failed
+                        return 1
+                fi
         fi
 
-        FS_Append_File "${_directory}/Dockerfile" "\
+        FS_Append_File "$___dest" "\
 # Defining environment variables
 ENV ARCH ${_target_arch}
 ENV OS ${_target_os}
@@ -119,15 +145,16 @@ ENV PORT 80
 
 # Assemble the file structure
 COPY .blank /tmp/.tmpfile
-ADD ${PROJECT_SKU} /app/bin/${PROJECT_SKU}
+ADD ${PROJECT_SKU} /app/bin/${PROJECT_SKU_TITLECASE}.sh.ps1
 
 # Set network port exposures
 EXPOSE 80
 
 # Set entry point
-ENTRYPOINT [\"/app/bin/${PROJECT_SKU}\"]
+ENTRYPOINT [\"/app/bin/${PROJECT_SKU_TITLECASE}.sh.ps1\"]
 "
         if [ $? -ne 0 ]; then
+                I18N_Create_Failed
                 return 1
         fi
 

@@ -61,14 +61,13 @@ PACKAGE_Assemble_FLATPAK_Content() {
                 return 10 # not applicable
         elif [ $(FS_Is_Target_A_MSI "$_target") -eq 0 ]; then
                 return 10 # not applicable
-        elif [ ! "$_target_os" = "linux" ]; then
+        elif [ ! "$_target_os" = "linux" ] && [ ! "$_target_os" = "any" ]; then
                 return 10 # not applicable
         fi
 
 
         # copy main program
-        _target="$1"
-        _filepath="${_directory}/${PROJECT_SKU}"
+        _filepath="${_directory}/${PROJECT_SKU_TITLECASE}"
         I18N_Copy "$_target" "$_filepath"
         FS_Copy_File "$_target" "$_filepath"
         if [ $? -ne 0 ]; then
@@ -117,23 +116,22 @@ PACKAGE_Assemble_FLATPAK_Content() {
 app-id: ${PROJECT_APP_ID}
 branch: ${_target_arch}
 default-branch: any
-command: ${PROJECT_SKU}
+command: ${PROJECT_SKU_TITLECASE}
 runtime: ${PROJECT_FLATPAK_RUNTIME}
 runtime-version: '${PROJECT_FLATPAK_RUNTIME_VERSION}'
 sdk: ${PROJECT_FLATPAK_SDK}
 finish-args:
   - \"--share=network\"
-  - \"--socket=pulseaudio\"
   - \"--filesystem=home\"
 modules:
   - name: ${PROJECT_SKU}-main
     buildsystem: simple
     no-python-timestamp-fix: true
     build-commands:
-      - install -D ${PROJECT_SKU} /app/bin/${PROJECT_SKU}
+      - install -D ${PROJECT_SKU_TITLECASE} /app/bin/${PROJECT_SKU_TITLECASE}
     sources:
       - type: file
-        path: ${PROJECT_SKU}
+        path: ${PROJECT_SKU_TITLECASE}
   - name: ${PROJECT_SKU}-appdata
     buildsystem: simple
     build-commands:

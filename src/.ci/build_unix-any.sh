@@ -39,11 +39,11 @@ fi
 
 
 # assemble polygot script
-___workspace="${PROJECT_PATH_ROOT}/${PROJECT_PATH_TEMP}/build-${PROJECT_SKU_TITLECASE}"
+___workspace="${PROJECT_PATH_ROOT}/${PROJECT_PATH_TEMP}/build-${PROJECT_SKU}"
 FS_Remake_Directory "$___workspace"
 
 
-___dest="${___workspace}/${PROJECT_SKU_TITLECASE}.sh.ps1"
+___dest="${___workspace}/${PROJECT_SKU}.sh.ps1"
 I18N_Create "$___dest"
 FS_Write_File "$___dest" "\
 echo \\\" <<'RUN_AS_BATCH' >/dev/null \">NUL \"\\\" \\\`\" <#\"
@@ -189,15 +189,36 @@ I18N_Newline
 
 
 # export
-___dest="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${PROJECT_SKU_TITLECASE}_any-any.sh.ps1"
-FS_Make_Housing_Directory "$___dest"
+FS_Make_Directory "${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}"
 
-I18N_Export "$___dest"
-FS_Copy_File "$___source" "$___dest"
-if [ $? -ne 0 ]; then
-        I18N_Export_Failed
-        return 1
-fi
+__old_IFS="$IFS"
+while IFS= read -r __line || [ -n "$__line" ]; do
+        ___dest="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${PROJECT_SKU}_${__line}.sh.ps1"
+        I18N_Export "$___dest"
+        FS_Copy_File "$___source" "$___dest"
+        if [ $? -ne 0 ]; then
+                I18N_Export_Failed
+                return 1
+        fi
+done <<EOF
+darwin-amd64
+darwin-arm64
+linux-386
+linux-amd64
+linux-arm64
+linux-arm
+linux-loong64
+linux-mips
+linux-mips64
+linux-mips64le
+linux-ppc64
+linux-ppc64le
+linux-riscv64
+linux-s390x
+windows-amd64
+windows-arm64
+EOF
+IFS="$__old_IFS" && unset __old_IFS
 
 
 

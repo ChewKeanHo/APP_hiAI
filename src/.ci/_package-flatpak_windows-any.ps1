@@ -61,13 +61,13 @@ function PACKAGE-Assemble-FLATPAK-Content {
 		return 10 # not applicable
 	} elseif ($(FS-Is-Target-A-MSI "${_target}") -eq 0) {
 		return 10 # not applicable
-	} elseif ($_target_os -ne "linux") {
+	} elseif (($_target_os -ne "linux") -and ($_target_os -ne "any")) {
 		return 10 # not applicable
 	}
 
 
 	# copy main program
-	$_filepath = "${_directory}\${env:PROJECT_SKU}"
+	$_filepath = "${_directory}\${env:PROJECT_SKU_TITLECASE}"
 	$null = I18N-Copy "${_target}" "${_filepath}"
 	$___process = FS-Copy-File "${_target}" "${_filepath}"
 	if ($___process -ne 0) {
@@ -77,8 +77,7 @@ function PACKAGE-Assemble-FLATPAK-Content {
 
 
 	# copy icon.svg
-	$_target = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}"
-	$_target = "${_target}\icons\icon.svg"
+	$_target = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}\icons\icon.svg"
 	$_filepath = "${_directory}\icon.svg"
 	$null = I18N-Copy "${_target}" "${_filepath}"
 	$___process = FS-Copy-File "${_target}" "${_filepath}"
@@ -89,8 +88,7 @@ function PACKAGE-Assemble-FLATPAK-Content {
 
 
 	# copy icon-48x48.png
-	$_target = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}"
-	$_target = "${_target}\icons\icon-48x48.png"
+	$_target = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}\icons\icon-48x48.png"
 	$_filepath = "${_directory}\icon-48x48.png"
 	$null = I18N-Copy "${_target}" "${_filepath}"
 	$___process = FS-Copy-File "${_target}" "${_filepath}"
@@ -101,8 +99,7 @@ function PACKAGE-Assemble-FLATPAK-Content {
 
 
 	# copy icon-128x128.png
-	$_target = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}"
-	$_target = "${_target}\icons\icon-128x128.png"
+	$_target = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}\icons\icon-128x128.png"
 	$_filepath = "${_directory}\icon-128x128.png"
 	$null = I18N-Copy "${_target}" "${_filepath}"
 	$___process = FS-Copy-File "${_target}" "${_filepath}"
@@ -119,23 +116,22 @@ function PACKAGE-Assemble-FLATPAK-Content {
 app-id: ${env:PROJECT_APP_ID}
 branch: ${_target_arch}
 default-branch: any
-command: ${env:PROJECT_SKU}
+command: ${env:PROJECT_SKU_TITLECASE}
 runtime: ${env:PROJECT_FLATPAK_RUNTIME}
 runtime-version: '${env:PROJECT_FLATPAK_RUNTIME_VERSION}'
 sdk: ${env:PROJECT_FLATPAK_SDK}
 finish-args:
   - "--share=network"
-  - "--socket=pulseaudio"
   - "--filesystem=home"
 modules:
   - name: ${env:PROJECT_SKU}-main
     buildsystem: simple
     no-python-timestamp-fix: true
     build-commands:
-      - install -D ${env:PROJECT_SKU} /app/bin/${env:PROJECT_SKU}
+      - install -D ${env:PROJECT_SKU_TITLECASE} /app/bin/${env:PROJECT_SKU_TITLECASE}
     sources:
       - type: file
-        path: ${env:PROJECT_SKU}
+        path: ${env:PROJECT_SKU_TITLECASE}
   - name: ${env:PROJECT_SKU}-appdata
     buildsystem: simple
     build-commands:

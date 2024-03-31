@@ -38,11 +38,11 @@ if ($___process -ne 0) {
 
 
 # assemble polygot script
-$___workspace = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_TEMP}\build-${env:PROJECT_SKU_TITLECASE}"
+$___workspace = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_TEMP}\build-${env:PROJECT_SKU}"
 $null = FS-Remake-Directory "${___workspace}"
 
 
-$___dest = "${___workspace}\${env:PROJECT_SKU_TITLECASE}.sh.ps1"
+$___dest = "${___workspace}\${env:PROJECT_SKU}.sh.ps1"
 $null = I18N-Create "${___dest}"
 $___process = FS-Write-File "${___dest}" @"
 echo \" <<'RUN_AS_BATCH' >/dev/null ">NUL "\" \``" <#"
@@ -191,14 +191,33 @@ $null = I18N-Newline
 
 
 # export
-$___dest = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}\${env:PROJECT_SKU_TITLECASE}_any-any.sh.ps1"
-$null = FS-Make-Housing-Directory "${___dest}"
+$null = FS-Make-Directory "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}"
 
-$null = I18N-Export "${___dest}"
-$___process = FS-Copy-File "${___source}" "${___dest}"
-if ($___process -ne 0) {
-	$null = I18N-Export-Failed
-	return 1
+foreach ($__line in @(
+	"darwin-amd64"
+	"darwin-arm64"
+	"linux-386"
+	"linux-amd64"
+	"linux-arm64"
+	"linux-arm"
+	"linux-loong64"
+	"linux-mips"
+	"linux-mips64"
+	"linux-mips64le"
+	"linux-ppc64"
+	"linux-ppc64le"
+	"linux-riscv64"
+	"linux-s390x"
+	"windows-amd64"
+	"windows-arm64"
+)) {
+	$___dest = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}\${env:PROJECT_SKU}_${__line}.sh.ps1"
+	$null = I18N-Export "${___dest}"
+	$___process = FS-Copy-File "${___source}" "${___dest}"
+	if ($___process -ne 0) {
+		$null = I18N-Export-Failed
+		return 1
+	}
 }
 
 

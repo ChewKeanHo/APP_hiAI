@@ -114,7 +114,7 @@ install -m 0644 copyright %{buildroot}/usr/local/share/doc/lib${env:PROJECT_SKU}
 		# copy main program
 		# TIP: (1) usually is: usr/local/bin or usr/local/sbin
 		#      (2) please avoid: bin/, usr/bin/, sbin/, and usr/sbin/
-		$_filepath = "${_directory}\BUILD\${env:PROJECT_SKU}"
+		$_filepath = "${_directory}\BUILD\${env:PROJECT_SKU_TITLECASE}"
 		$null = I18N-Copy "${_target}" "${_filepath}"
 		$___process = FS-Make-Housing-Directory "${_filepath}"
 		if ($___process -ne 0) {
@@ -134,7 +134,7 @@ install -m 0644 copyright %{buildroot}/usr/local/share/doc/lib${env:PROJECT_SKU}
 		$null = I18N-Create "${__file}"
 		$___process = FS-Write-File "${__file}" @"
 install --directory %{buildroot}/usr/local/bin
-install -m 0755 ${env:PROJECT_SKU} %{buildroot}/usr/local/bin
+install -m 0755 ${env:PROJECT_SKU_TITLECASE} %{buildroot}/usr/local/bin
 
 install --directory %{buildroot}/usr/local/share/doc/${env:PROJECT_SKU}/
 install -m 644 copyright %{buildroot}/usr/local/share/doc/${env:PROJECT_SKU}/
@@ -152,7 +152,7 @@ install -m 644 ${env:PROJECT_SKU}.1.gz %{buildroot}/usr/local/share/man/man1/
 		$__file = "${_directory}\SPEC_FILES"
 		$null = I18N-Create "${__file}"
 		$___process = FS-Write-File "${__file}" @"
-/usr/local/bin/${env:PROJECT_SKU}
+/usr/local/bin/${env:PROJECT_SKU_TITLECASE}
 /usr/local/share/doc/${env:PROJECT_SKU}/copyright
 /usr/local/share/man/man1/${env:PROJECT_SKU}.1.gz
 "@

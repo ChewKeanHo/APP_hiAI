@@ -1,5 +1,7 @@
 hollowayhiai (0.0.1) stable; urgency=low
 
+  * automataCI: performed early patched to archive CI job algorithm
+  * src: implemented polygot script build alogrithm
   * CONFIG.toml: updated URI to match upstream repository address
   * README.md: updated pitch line to be more direct.
   * README.md: added supported AI vendors list
@@ -7,4 +9,4 @@ hollowayhiai (0.0.1) stable; urgency=low
   * README.md: updated with how-tos guides
   * src: developed first prototype
 
--- (Holloway) Chew, Kean Ho <hello@hollowaykeanho.com>  Sun, 31 Mar 2024 10:19:08 +0800
+-- (Holloway) Chew, Kean Ho <hello@hollowaykeanho.com>  Sun, 31 Mar 2024 17:47:26 +0800

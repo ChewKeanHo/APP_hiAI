@@ -86,7 +86,7 @@ PACKAGE_Assemble_IPK_Content() {
 
                 I18N_Assemble "$_target" "$___dest"
                 FS_Make_Directory "$___dest"
-                FS_Copy_File "$_target" "$___dest"
+                FS_Copy_File "$_target" "${___dest}/${PROJECT_SKU_TITLECASE}"
                 if [ $? -ne 0 ]; then
                         I18N_Assemble_Failed
                         return 1

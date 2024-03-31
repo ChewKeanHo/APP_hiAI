@@ -24,3 +24,8 @@ supported device via large language model (LLM) prompt.
 This project is to make LLM AI prompt available for all the current
 computing devices via interacting with API so that one does not
 need to overly dependent on a graphical user interface alone.
+
+When operating in Sandbox mode, this app requires:
+(1) Network access to communicate with service providers' API.
+(2) Filesystem access for 'text2image' or 'text2video' queries
+    for saving the media output files.

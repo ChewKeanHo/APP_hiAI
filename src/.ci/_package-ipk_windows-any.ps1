@@ -59,7 +59,7 @@ function PACKAGE-Assemble-IPK-Content {
 
 		$null = I18N-Assemble "${_target}" "${___dest}"
 		$null = FS-Make-Directory "${___dest}"
-		$___process = FS-Copy-File "${_target}" "${___dest}"
+		$___process = FS-Copy-File "${_target}" "${___dest}\${env:PROJECT_SKU_TITLECASE}"
 		if ($___process -ne 0) {
 			$null = I18N-Assemble-Failed
 			return 1

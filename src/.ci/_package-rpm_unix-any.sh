@@ -112,7 +112,7 @@ install -m 0644 copyright %{buildroot}/usr/local/share/doc/lib${PROJECT_SKU}/
         else
                 # copy main program
                 # TIP: (1) copy all files into "${__directory}/BUILD" directory.
-                _filepath="${_directory}/BUILD/${PROJECT_SKU}"
+                _filepath="${_directory}/BUILD/${PROJECT_SKU_TITLECASE}"
                 I18N_Copy "$_target" "$_filepath"
                 FS_Make_Housing_Directory "$_filepath"
                 if [ $? -ne 0 ]; then
@@ -132,7 +132,7 @@ install -m 0644 copyright %{buildroot}/usr/local/share/doc/lib${PROJECT_SKU}/
                 I18N_Create "$__file"
                 FS_Write_File "$__file" "\
 install --directory %{buildroot}/usr/local/bin
-install -m 0755 ${PROJECT_SKU} %{buildroot}/usr/local/bin
+install -m 0755 ${PROJECT_SKU_TITLECASE} %{buildroot}/usr/local/bin
 
 install --directory %{buildroot}/usr/local/share/doc/${PROJECT_SKU}/
 install -m 0644 copyright %{buildroot}/usr/local/share/doc/${PROJECT_SKU}/
@@ -150,7 +150,7 @@ install -m 0644 ${PROJECT_SKU}.1.gz %{buildroot}/usr/local/share/man/man1/
                 __file="${_directory}/SPEC_FILES"
                 I18N_Create "$__file"
                 FS_Write_File "$__file" "\
-/usr/local/bin/${PROJECT_SKU}
+/usr/local/bin/${PROJECT_SKU_TITLECASE}
 /usr/local/share/doc/${PROJECT_SKU}/copyright
 /usr/local/share/man/man1/${PROJECT_SKU}.1.gz
 "

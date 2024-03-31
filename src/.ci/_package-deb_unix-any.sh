@@ -100,7 +100,7 @@ PACKAGE_Assemble_DEB_Content() {
 
                 I18N_Copy "$_target" "$___dest"
                 FS_Make_Directory "$___dest"
-                FS_Copy_File "$_target" "$___dest"
+                FS_Copy_File "$_target" "${___dest}/${PROJECT_SKU_TITLECASE}"
                 if [ $? -ne 0 ]; then
                         I18N_Copy_Failed
                         return 1

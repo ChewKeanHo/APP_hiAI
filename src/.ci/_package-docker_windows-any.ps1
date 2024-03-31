@@ -3,7 +3,7 @@
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not
 # use this file except in compliance with the License. You may obtain a copy
 # of the License at:
-#               http://www.apache.org/licenses/LICENSE-2.0
+#                http://www.apache.org/licenses/LICENSE-2.0
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -21,6 +21,7 @@ if (-not (Test-Path -Path $env:PROJECT_PATH_ROOT)) {
 
 . "${env:LIBS_AUTOMATACI}\services\io\fs.ps1"
 . "${env:LIBS_AUTOMATACI}\services\io\strings.ps1"
+. "${env:LIBS_AUTOMATACI}\services\i18n\translations.ps1"
 
 
 
@@ -36,11 +37,11 @@ function PACKAGE-Assemble-DOCKER-Content {
 
 
 	# validate project
-	if ($(FS-Is-Target-A-Source "${_target}") -eq 0) {
+	if ($(FS-Is-Target-A-Source "${_target}") -ne 0) {
 		return 10 # not applicable
 	} elseif ($(FS-Is-Target-A-Docs "${_target}") -eq 0) {
 		return 10 # not applicable
-	} elseif ($(FS-Is-Target-A-Library "${_target}") -eq 0) {
+	} elseif ($(FS-Is-Target-A-Library "${_target}") -ne 0) {
 		return 10 # not applicable
 	} elseif ($(FS-Is-Target-A-WASM-JS "${_target}") -eq 0) {
 		return 10 # not applicable
@@ -54,43 +55,53 @@ function PACKAGE-Assemble-DOCKER-Content {
 		return 10 # not applicable
 	} elseif ($(FS-Is-Target-A-MSI "${_target}") -eq 0) {
 		return 10 # not applicable
+	} elseif ($(FS-Is-Target-A-PDF "${_target}") -eq 0) {
+		return 10 # not applicable
 	}
 
 	switch ($_target_os) {
-	{ $_ -in 'linux', 'windows' } {
+	windows {
 		# accepted
+	} any {
+		$_target_os = "${env:PROJECT_OS}"
 	} default {
-		return 10
+		return 10 # not applicable
+	}}
+
+	switch ($_target_arch) {
+	amd64 {
+		# accepted
+	} any {
+		$_target_arch = "${env:PROJECT_ARCH}"
+	} default {
+		return 10 # not applicable
 	}}
 
 
 	# assemble the package
-	$___process = FS-Copy-File "${_target}" "${_directory}\${env:PROJECT_SKU}"
+	$___dest = "${_directory}\${env:PROJECT_SKU}"
+	$null = I18N-Assemble "${_target}" "${___dest}"
+	$___process = FS-Copy-File "${_target}" "${___dest}"
 	if ($___process -ne 0) {
+		$null = I18N-Assemble-Failed
 		return 1
 	}
 
-	$___process = FS-Touch-File "${_directory}\.blank"
+	$___dest = "${_directory}\.blank"
+	$null = I18N-Assemble "${_target}" "${___dest}"
+	$___process = FS-Copy-File "${_target}" "${___dest}"
 	if ($___process -ne 0) {
+		$null = I18N-Assemble-Failed
 		return 1
 	}
 
 
 	# generate the Dockerfile
-	$___process = FS-Write-File "${_directory}\Dockerfile" @"
+	$___dest = "${_directory}\Dockerfile"
+	$null = I18N-Create "${___dest}"
+	$___process = FS-Write-File "${___dest}" @"
 # Defining baseline image
-"@
-	if (${_target_os} == "windows") {
-		$___process = FS-Append-File "${_directory}\Dockerfile" @"
 FROM --platform=${_target_os}/${_target_arch} mcr.microsoft.com/windows/nanoserver:ltsc2022
-"@
-	} else {
-		$___process = FS-Append-File "${_directory}\Dockerfile" @"
-FROM --platform=${_target_os}/${_target_arch} busybox:latest
-"@
-	}
-
-	$___process = FS-Append-File "${_directory}\Dockerfile" @"
 LABEL org.opencontainers.image.title=`"${env:PROJECT_NAME}`"
 LABEL org.opencontainers.image.description=`"${env:PROJECT_PITCH}`"
 LABEL org.opencontainers.image.authors=`"${env:PROJECT_CONTACT_NAME} <${env:PROJECT_CONTACT_EMAIL}>`"
@@ -98,20 +109,32 @@ LABEL org.opencontainers.image.version=`"${env:PROJECT_VERSION}`"
 LABEL org.opencontainers.image.revision=`"${env:PROJECT_CADENCE}`"
 LABEL org.opencontainers.image.licenses=`"${env:PROJECT_LICENSE}`"
 "@
+	if ($___process -ne 0) {
+		$null = I18N-Create-Failed
+		return 1
+	}
 
 	if ($(STRINGS-Is-Empty "${env:PROJECT_CONTACT_WEBSITE}") -ne 0) {
-		$___process = FS-Append-File "${_directory}\Dockerfile" @"
+		$___process = FS-Append-File "${___dest}" @"
 LABEL org.opencontainers.image.url=`"${env:PROJECT_CONTACT_WEBSITE}`"
 "@
+		if ($___process -ne 0) {
+			$null = I18N-Create-Failed
+			return 1
+		}
 	}
 
 	if ($(STRINGS-Is-Empty "${env:PROJECT_SOURCE_URL}") -ne 0) {
-		$___process = FS-Append-File "${_directory}\Dockerfile" @"
+		$___process = FS-Append-File "${___dest}" @"
 LABEL org.opencontainers.image.source=`"${env:PROJECT_SOURCE_URL}`"
 "@
+		if ($___process -ne 0) {
+			$null = I18N-Create-Failed
+			return 1
+		}
 	}
 
-	$___process = FS-Append-File "${_directory}\Dockerfile" @"
+	$___process = FS-Append-File "${___dest}" @"
 # Defining environment variables
 ENV ARCH ${_target_arch}
 ENV OS ${_target_os}
@@ -119,15 +142,16 @@ ENV PORT 80
 
 # Assemble the file structure
 COPY .blank /tmp/.tmpfile
-ADD ${PROJECT_SKU} /app/bin/${PROJECT_SKU}
+ADD ${env:PROJECT_SKU} /app/bin/${env:PROJECT_SKU_TITLECASE}.sh.ps1
 
 # Set network port exposures
 EXPOSE 80
 
 # Set entry point
-ENTRYPOINT ["/app/bin/${PROJECT_SKU}"]
+ENTRYPOINT ["/app/bin/${env:PROJECT_SKU_TITLECASE}.sh.ps1"]
 "@
 	if ($___process -ne 0) {
+		$null = I18N-Create-Failed
 		return 1
 	}
 

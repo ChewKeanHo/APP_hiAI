@@ -20,6 +20,9 @@ if [ "$PROJECT_PATH_ROOT" = "" ]; then
         return 1
 fi
 
+. "${LIBS_AUTOMATACI}/services/io/fs.sh"
+. "${LIBS_AUTOMATACI}/services/i18n/translations.sh"
+
 
 
 
@@ -31,6 +34,52 @@ PACKAGE_Assemble_HOMEBREW_Content() {
         _target_arch="$5"
 
 
-        # execute
-        return 10 # not applicable - should be tech-oriented.
+        # validate project
+        if [ $(FS_Is_Target_A_Homebrew "$_target") -ne 0 ]; then
+                return 10 # not applicable
+        fi
+
+
+        # assemble the package
+        ___source="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${PROJECT_SKU}_any-any.sh.ps1"
+        ___dest="${_directory}/bin/${PROJECT_SKU_TITLECASE}.sh.ps1"
+        I18N_Assemble "$___source" "$___dest"
+        FS_Make_Directory "$___dest"
+        FS_Copy_File "$___source" "$___dest"
+        if [ $? -ne 0 ]; then
+                I18N_Assemble_Failed
+                return 1
+        fi
+
+
+        # script formula.rb
+        ___dest="${_directory}/formula.rb"
+        I18N_Create "$___dest"
+        FS_Write_File "$___dest" "\
+class ${PROJECT_SKU_TITLECASE} < Formula
+  desc \"${PROJECT_PITCH}\"
+  homepage \"${PROJECT_CONTACT_WEBSITE}\"
+  license \"${PROJECT_LICENSE}\"
+  url \"${PROJECT_HOMEBREW_SOURCE_URL}/${PROJECT_VERSION}/{{ TARGET_PACKAGE }}\"
+  sha256 \"{{ TARGET_SHASUM }}\"
+
+
+  def install
+    chmod 0755, \"bin/${PROJECT_SKU_TITLECASE}.sh.ps1\"
+    bin.install \"bin/${PROJECT_SKU_TITLECASE}.sh.ps1\"
+  end
+
+  test do
+    assert_predicate ./bin/${PROJECT_SKU_TITLECASE}.sh.ps1, :exist?
+  end
+end
+"
+        if [ $? -ne 0 ]; then
+                I18N_Create_Failed
+                return 1
+        fi
+
+
+        # report status
+        return 0
 }
