@@ -66,7 +66,7 @@ PRODUCT_APP_UUID = "6E6006CC-0819-D7AE-80ED-B7F52077294F"
 # PROJECT_NAME
 # This is the name of the product used in documentation, marketing addresses
 # etc only. For programming purposes, PROJECT_SKU is used instead.
-PROJECT_NAME = "Holloway's 'Hi AI!'"
+PROJECT_NAME = "Holloway's Hi AI!'"
 
 
 # PROJECT_PITCH
