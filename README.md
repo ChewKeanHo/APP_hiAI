@@ -45,9 +45,9 @@ The software is packaged based on available OSes.
 
 
 
-### Debian-based OS (`linux`, `hurd`, etc)
+### Debian based OSes (`linux`, `hurd`, etc)
 
-1. Download the latest `.deb` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases)
+1. Download the latest `.deb` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases).
 2. perform `$ dpkg -i <package>.deb`.
 
 Don't worry, the package will setup the upstream `apt` repository list source
@@ -55,19 +55,19 @@ alongside the required GPG key for future `apt update`.
 
 
 
-### Red-Hat Linux (`redhat`, `fedora`, etc)
+### Red Hat based Linux OS (`redhat`, `fedora`, etc)
 
-1. Download the latest `.rpm` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases)
+1. Download the latest `.rpm` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases).
 2. perform `$ rpm -i <package>.rpm`.
 
 Don't worry, the package will setup the upstream `yum` repository list source
-alongside the required GPG key for future `apt update`.
+alongside the required GPG key for future `yum update`.
 
 
 
 ### Flatpak
 
-1. Download the latest `.flatpak` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases)
+1. Download the latest `.flatpak` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases).
 2. perform `$ flatpak --user install <package>.flatpak`.
 
 Note that the command to use is:
@@ -107,7 +107,7 @@ $ docker pull ghcr.io/chewkeanho/hollowayhiai:latest
 
 # OR
 
-# $ docker pull ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
+# $ docker pull ghcr.io/chewkeanho/hollowayhiai:[VERSION]
 # Example for `v0.0.2`:
 $ docker pull ghcr.io/chewkeanho/hollowayhiai:0.0.2
 ```
@@ -120,11 +120,11 @@ the pathing you mounted to (`target=`). For example:
 # note - '-it' must always be the last argument
 $ docker run --env ARGS="--config /CONFIG.toml --text2text 'Who are you?'" \
 	--mount type=bind,source="/path/to/CONFIG.toml",target="/CONFIG.toml" \
-	-it ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
+	-it ghcr.io/chewkeanho/hollowayhiai:[VERSION]
 
 
 # to call for help
-$ docker run --env ARGS="--help" ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
+$ docker run --env ARGS="--help" ghcr.io/chewkeanho/hollowayhiai:[VERSION]
 ```
 
 

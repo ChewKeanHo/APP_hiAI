@@ -1,7 +1,0 @@
-hollowayhiai (0.0.2) stable; urgency=low
-
-  * README.md: updated flatpak instructions
-  * root: corrected app name
-  * src: updated ZENODO's issued DOI
-
--- (Holloway) Chew, Kean Ho <hello@hollowaykeanho.com>  Mon, 01 Apr 2024 08:57:39 +0800
