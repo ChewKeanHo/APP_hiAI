@@ -87,7 +87,37 @@ For direct installation in FlatHub, it's still work in progress.
 
 ### Docker / Podman
 
-Please refer to [GitHub Packages Section](https://github.com/ChewKeanHo/APP_hiAI/pkgs/container/hollowayhiai).
+The Docker version is hosted on
+[GitHub Packages](https://github.com/ChewKeanHo/APP_hiAI/pkgs/container/hollowayhiai).
+Please keep in mind that the packages section is continuously updated with
+development so the catalog can be confusing (e.g. you may see some development
+images before release).
+
+To pull an image with Docker, the command is as follows:
+
+```
+$ docker pull ghcr.io/chewkeanho/hollowayhiai:latest
+
+# OR
+
+# $ docker pull ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
+# Example for `v0.0.2`:
+# $ docker pull ghcr.io/chewkeanho/hollowayhiai:0.0.2
+```
+
+To run with Docker, you need to mount your config file and execute using the
+`ARGS` environment variables. The `--config` argument **MUST** match with
+the pathing you mounted to. For example:
+
+```
+# note - '-it' must always be the last argument
+$ docker run --env ARGS="--config /CONFIG.toml --text2text 'Who are you?'" \
+	--mount type=bind,source="${HOME}/CONFIG.toml",target="/CONFIG.toml" \
+	-it ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
+
+# to call for help
+$ docker run --env ARGS="--help" ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
+```
 
 
 

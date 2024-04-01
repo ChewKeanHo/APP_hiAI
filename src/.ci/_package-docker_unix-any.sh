@@ -141,17 +141,22 @@ LABEL org.opencontainers.image.source=\"${PROJECT_SOURCE_URL}\"
 # Defining environment variables
 ENV ARCH ${_target_arch}
 ENV OS ${_target_os}
-ENV PORT 80
+ENV ARGS_DEFAULT \"--help\"
+
+# Install curl and jq
+RUN apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends curl jq ca-certificates && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Assemble the file structure
-COPY .blank /tmp/.tmpfile
-ADD ${PROJECT_SKU} /app/bin/${PROJECT_SKU_TITLECASE}.sh.ps1
+ADD ${PROJECT_SKU} /usr/local/bin/${PROJECT_SKU_TITLECASE}
 
-# Set network port exposures
-EXPOSE 80
+# Make the script executable
+RUN chmod +x /usr/local/bin/${PROJECT_SKU_TITLECASE}
 
 # Set entry point
-ENTRYPOINT [\"/app/bin/${PROJECT_SKU_TITLECASE}.sh.ps1\"]
+ENTRYPOINT [\"/bin/bash\", \"-c\", \"/usr/local/bin/${PROJECT_SKU_TITLECASE} \${ARGS:-\${ARGS_DEFAULT}}\"]
 "
         if [ $? -ne 0 ]; then
                 I18N_Create_Failed
