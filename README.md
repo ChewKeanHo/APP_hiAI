@@ -82,7 +82,19 @@ For direct installation in FlatHub, it's still work in progress.
 
 ### Homebrew (MacOS)
 
-*Coming Soon*
+*NOTE: One time Setup* - add the ChewKeanHo's Collections Tap.
+
+```
+$ brew tap chewkeanho/collections https://github.com/ChewKeanHo/Collections.git
+```
+
+Install Holloway's HiAI!
+
+```
+$ brew install hollowayhiai
+```
+
+That's it.
 
 
 
