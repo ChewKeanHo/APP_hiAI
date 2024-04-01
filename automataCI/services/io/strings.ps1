@@ -196,3 +196,46 @@ function STRINGS-To-Uppercase {
 	# execute
 	return $___content.ToUpper()
 }
+
+
+
+
+function STRINGS-To-Uppercase-First-Char {
+	param(
+		[string]$___content
+	)
+
+
+	# valdiate input
+	if ([string]::IsNullOrEmpty($___content)) {
+		return ""
+	}
+
+
+	# execute
+	$___buffer = ""
+	$___resevoir = $___content
+	$___trigger = $true
+	while ($___resevoir -ne "") {
+		## extract character
+		$___char = $___resevoir.Substring(0, 1)
+		if ($___char -eq "``") {
+			$___char = $___resevoir.Substring(0, 2)
+		}
+		$___resevoir = $___resevoir -replace "^${___char}", ""
+
+		## process characters
+		if (($___char -eq " ") -or ($___char -eq "`n")) {
+			$___trigger = $true
+		} else {
+			$___char = $___char.ToUpper()
+			$___trigger = $false
+		}
+
+		$___buffer += $___char
+	}
+
+
+	# report status
+	return $___buffer
+}

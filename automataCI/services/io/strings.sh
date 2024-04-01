@@ -200,3 +200,46 @@ STRINGS_To_Uppercase() {
         # report status
         return 0
 }
+
+
+
+
+STRINGS_To_Uppercase_First_Char() {
+        #___content="$1"
+
+
+        # validate input
+        if [ $(STRINGS_Is_Empty "$1") -eq 0 ]; then
+                printf -- ""
+                return 1
+        fi
+
+
+        # execute
+        ___buffer=""
+        ___resevoir="$1"
+        ___trigger=0
+        while [ -n "$___resevoir" ]; do
+                ## extract character
+                ___char="$(printf -- "%.1s" "$___resevoir")"
+                if [ "$___char" = '\' ]; then
+                        ___char="$(printf -- "%.2s" "$___resevoir")"
+                fi
+                ___resevoir="${___resevoir#*${___char}}"
+
+                ## process character
+                if [ "$___char" = " " ] || [ "$___char" = "\n" ]; then
+                        ___trigger=0
+                elif [ $___trigger -eq 0 ]; then
+                        ___char="$(printf -- "%s" "$___char" | tr '[:lower:]' '[:upper:]')"
+                        ___trigger=1
+                fi
+
+                ___buffer="${___buffer}${___char}"
+        done
+
+
+        # report status
+        printf -- "%b" "$___buffer"
+        return 0
+}

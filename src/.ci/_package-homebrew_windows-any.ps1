@@ -20,6 +20,7 @@ if (-not (Test-Path -Path $env:PROJECT_PATH_ROOT)) {
 }
 
 . "${env:LIBS_AUTOMATACI}\services\io\fs.ps1"
+. "${env:LIBS_AUTOMATACI}\services\io\strings.ps1"
 . "${env:LIBS_AUTOMATACI}\services\i18n\translations.ps1"
 
 
@@ -57,17 +58,18 @@ function PACKAGE-Assemble-HOMEBREW-Content {
 	$___dest = "${_directory}\formula.rb"
 	$null = I18N-Create "${___dest}"
 	$___process = FS-Write-File "${___dest}" @"
-class ${env:PROJECT_SKU_TITLECASE} < Formula
+class $(STRINGS-To-Uppercase-First-Char "${env:PROJECT_SKU_TITLECASE}") < Formula
   desc "${env:PROJECT_PITCH}"
   homepage "${env:PROJECT_CONTACT_WEBSITE}"
   license "${env:PROJECT_LICENSE}"
-  url "${env:PROJECT_HOMEBREW_SOURCE_URL}/${env:PROJECT_VERSION}/{{ TARGET_PACKAGE }}"
+  url "${env:PROJECT_HOMEBREW_SOURCE_URL}/{{ TARGET_PACKAGE }}"
   sha256 "{{ TARGET_SHASUM }}"
 
 
   def install
     chmod 0755, "bin/${env:PROJECT_SKU_TITLECASE}"
-    bin.install "bin/${env:PROJECT_SKU_TITLECASE}"
+    libexec.install "bin/${env:PROJECT_SKU_TITLECASE}"
+    bin.install_symlink libexec/"${env:PROJECT_SKU_TITLECASE}" => "${env:PROJECT_SKU_TITLECASE}"
   end
 
   test do

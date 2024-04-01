@@ -21,6 +21,7 @@ if [ "$PROJECT_PATH_ROOT" = "" ]; then
 fi
 
 . "${LIBS_AUTOMATACI}/services/io/fs.sh"
+. "${LIBS_AUTOMATACI}/services/io/strings.sh"
 . "${LIBS_AUTOMATACI}/services/i18n/translations.sh"
 
 
@@ -56,17 +57,18 @@ PACKAGE_Assemble_HOMEBREW_Content() {
         ___dest="${_directory}/formula.rb"
         I18N_Create "$___dest"
         FS_Write_File "$___dest" "\
-class ${PROJECT_SKU_TITLECASE} < Formula
+class $(STRINGS_To_Uppercase_First_Char "$PROJECT_SKU") < Formula
   desc \"${PROJECT_PITCH}\"
   homepage \"${PROJECT_CONTACT_WEBSITE}\"
   license \"${PROJECT_LICENSE}\"
-  url \"${PROJECT_HOMEBREW_SOURCE_URL}/${PROJECT_VERSION}/{{ TARGET_PACKAGE }}\"
+  url \"${PROJECT_HOMEBREW_SOURCE_URL}/{{ TARGET_PACKAGE }}\"
   sha256 \"{{ TARGET_SHASUM }}\"
 
 
   def install
     chmod 0755, \"bin/${PROJECT_SKU_TITLECASE}\"
-    bin.install \"bin/${PROJECT_SKU_TITLECASE}\"
+    libexec.install \"bin/${PROJECT_SKU_TITLECASE}\"
+    bin.install_symlink libexec/\"${PROJECT_SKU_TITLECASE}\" => \"${PROJECT_SKU_TITLECASE}\"
   end
 
   test do
