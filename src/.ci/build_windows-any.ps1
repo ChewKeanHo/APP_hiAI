@@ -223,6 +223,29 @@ foreach ($__line in @(
 
 
 
+# placeholding flag files
+foreach ($__line in @(
+	"${env:PROJECT_SKU}-chocolatey_any-any"
+)) {
+	if ($(STRINGS-Is-Empty "${__line}") -eq 0) {
+		continue
+	}
+
+
+	# build the file
+	$__file = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}\${__line}"
+	$null = I18N-Build "${__line}"
+	$null = FS-Remove-Silently "${__file}"
+	$___process = FS-Touch-File "${__file}"
+	if ($___process -ne 0) {
+		$null = I18N-Build-Failed
+		return 1
+	}
+}
+
+
+
+
 # build changelog entries
 $__file = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_SOURCE}\changelog"
 $null = I18N-Create "${env:PROJECT_VERSION} DATA CHANGELOG"

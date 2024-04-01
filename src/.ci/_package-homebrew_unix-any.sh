@@ -41,10 +41,10 @@ PACKAGE_Assemble_HOMEBREW_Content() {
 
 
         # assemble the package
-        ___source="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${PROJECT_SKU}_any-any.sh.ps1"
-        ___dest="${_directory}/bin/${PROJECT_SKU_TITLECASE}.sh.ps1"
+        ___source="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${PROJECT_SKU}_darwin-amd64.sh.ps1"
+        ___dest="${_directory}/bin/${PROJECT_SKU_TITLECASE}"
         I18N_Assemble "$___source" "$___dest"
-        FS_Make_Directory "$___dest"
+        FS_Make_Housing_Directory "$___dest"
         FS_Copy_File "$___source" "$___dest"
         if [ $? -ne 0 ]; then
                 I18N_Assemble_Failed
@@ -65,12 +65,12 @@ class ${PROJECT_SKU_TITLECASE} < Formula
 
 
   def install
-    chmod 0755, \"bin/${PROJECT_SKU_TITLECASE}.sh.ps1\"
-    bin.install \"bin/${PROJECT_SKU_TITLECASE}.sh.ps1\"
+    chmod 0755, \"bin/${PROJECT_SKU_TITLECASE}\"
+    bin.install \"bin/${PROJECT_SKU_TITLECASE}\"
   end
 
   test do
-    assert_predicate ./bin/${PROJECT_SKU_TITLECASE}.sh.ps1, :exist?
+    assert_predicate ./bin/${PROJECT_SKU_TITLECASE}, :exist?
   end
 end
 "

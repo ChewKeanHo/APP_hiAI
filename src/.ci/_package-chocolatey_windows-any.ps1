@@ -42,7 +42,7 @@ function PACKAGE-Assemble-CHOCOLATEY-Content {
 
 
 	# assemble the package
-	$___source = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}\${env:PROJECT_SKU}_any-any.sh.ps1"
+	$___source = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}\${env:PROJECT_SKU}_windows-amd64.sh.ps1"
 	$___dest = "${_directory}\bin\${env:PROJECT_SKU_TITLECASE}.sh.ps1"
 	$null = I18N-Assemble "${___source}" "${___dest}"
 	$null = FS-Make-Housing-Directory "${___dest}"

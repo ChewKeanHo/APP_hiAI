@@ -42,10 +42,10 @@ function PACKAGE-Assemble-HOMEBREW-Content {
 
 
 	# assemble the package
-	$___source = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}\${env:PROJECT_SKU}_any-any.sh.ps1"
-	$___dest = "${_directory}\bin\${env:PROJECT_SKU_TITLECASE}.sh.ps1"
+	$___source = "${env:PROJECT_PATH_ROOT}\${env:PROJECT_PATH_BUILD}\${env:PROJECT_SKU}_darwin-amd64.sh.ps1"
+	$___dest = "${_directory}\bin\${env:PROJECT_SKU_TITLECASE}"
 	$null = I18N-Assemble "${___source}" "${___dest}"
-	$null = FS-Make-Directory "${___dest}"
+	$null = FS-Make-Housing-Directory "${___dest}"
 	$___process = FS-Copy-File "${___source}" "${___dest}"
 	if ($___process -ne 0) {
 		$null = I18N-Assemble-Failed
@@ -66,12 +66,12 @@ class ${env:PROJECT_SKU_TITLECASE} < Formula
 
 
   def install
-    chmod 0755, "bin/${env:PROJECT_SKU_TITLECASE}.sh.ps1"
-    bin.install "bin/${env:PROJECT_SKU_TITLECASE}.sh.ps1"
+    chmod 0755, "bin/${env:PROJECT_SKU_TITLECASE}"
+    bin.install "bin/${env:PROJECT_SKU_TITLECASE}"
   end
 
   test do
-    assert_predicate ./bin/${env:PROJECT_SKU_TITLECASE}.sh.ps1, :exist?
+    assert_predicate ./bin/${env:PROJECT_SKU_TITLECASE}, :exist?
   end
 end
 "@

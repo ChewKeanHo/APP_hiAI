@@ -41,7 +41,7 @@ PACKAGE_Assemble_CHOCOLATEY_Content() {
 
 
         # assemble the package
-        ___source="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${PROJECT_SKU}_any-any.sh.ps1"
+        ___source="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${PROJECT_SKU}_windows-amd64.sh.ps1"
         ___dest="${_directory}/bin/${PROJECT_SKU_TITLECASE}.sh.ps1"
         I18N_Assemble "$___source" "$___dest"
         FS_Make_Housing_Directory "$___dest"

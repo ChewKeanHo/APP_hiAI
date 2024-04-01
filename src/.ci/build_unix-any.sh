@@ -223,6 +223,30 @@ IFS="$__old_IFS" && unset __old_IFS
 
 
 
+# placeholding flag files
+old_IFS="$IFS"
+while IFS="" read -r __line || [ -n "$__line" ]; do
+        if [ $(STRINGS_Is_Empty "$__line") -eq 0 ]; then
+                continue
+        fi
+
+
+        # build the file
+        __file="${PROJECT_PATH_ROOT}/${PROJECT_PATH_BUILD}/${__line}"
+        I18N_Build "$__line"
+        FS_Remove_Silently "$__file"
+        FS_Touch_File "$__file"
+        if [ $? -ne 0 ]; then
+                I18N_Build_Failed
+                return 1
+        fi
+done <<EOF
+${PROJECT_SKU}-homebrew_any-any
+EOF
+
+
+
+
 # build changelog entries
 __file="${PROJECT_PATH_ROOT}/${PROJECT_PATH_SOURCE}/changelog"
 I18N_Create "${PROJECT_VERSION} DATA CHANGELOG"

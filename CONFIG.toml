@@ -624,7 +624,7 @@ PROJECT_HOMEBREW_SOURCE_URL = "https://github.com/ChewKeanHo/Collections/release
 # PROJECT_CHOCOLATEY_REPO
 # The Chocolatey package publication git repository for updating and publishing
 # Chocolatey's usable nupkg packages. This is used in release job.
-PROJECT_CHOCOLATEY_REPO = "git@github.com:ChewKeanHo/Collections.git"
+PROJECT_CHOCOLATEY_REPO = "git@github.com:ChewKeanHo/Testbed.git"
 
 
 # PROJECT_CHOCOLATEY_REPO_KEY
