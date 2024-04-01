@@ -47,7 +47,9 @@ RELEASE_Run_HOMEBREW() {
 
 
         # execute
-        HOMEBREW_Publish "$1" "${2}/Formula/${PROJECT_SKU}.rb"
+        HOMEBREW_Publish \
+                "$1" \
+                "${2}/Formula/$(printf -- "%.1s" "${PROJECT_SKU}")/${PROJECT_SKU}.rb"
         if [ $? -ne 0 ]; then
                 I18N_Export_Failed
                 return 1

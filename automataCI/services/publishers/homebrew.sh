@@ -60,9 +60,8 @@ HOMEBREW_Publish() {
 
 
         # execute
-        ___dest="${2}/$(printf -- %.1s "$1")/$(FS_Get_File "$1")"
-        FS_Make_Housing_Directory "$___dest"
-        FS_Copy_File "$1" "$___dest"
+        FS_Make_Housing_Directory "$2"
+        FS_Copy_File "$1" "$2"
         if [ $? -ne 0 ]; then
                 return 1
         fi

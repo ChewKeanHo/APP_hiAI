@@ -49,7 +49,9 @@ function RELEASE-Run-HOMEBREW {
 
 
 	# execute
-	$___process = HOMEBREW-Publish "${___target}" "${___repo}/Formula/${env:PROJECT_SKU}.rb"
+	$___process = HOMEBREW-Publish `
+		"${___target}" `
+		"${___repo}\Formula\$(${env:PROJECT_SKU}.Substring(0,1))\${env:PROJECT_SKU}.rb"
 	if ($___process -ne 0) {
 		$null = I18N-Export-Failed
 		return 1

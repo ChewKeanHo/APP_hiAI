@@ -64,9 +64,8 @@ function HOMEBREW-Publish {
 
 
 	# execute
-	$___dest = "${___destination}\$($___target.Substring(0,1))\$(FS-Get-File "${___target}")"
-	$null = FS-Make-Housing-Directory "${___dest}"
-	$___process = FS-Copy-File "${___target}" "${___dest}"
+	$null = FS-Make-Housing-Directory "${___destination}"
+	$___process = FS-Copy-File "${___target}" "${___destination}"
 	if ($___process -ne 0) {
 		return 1
 	}
