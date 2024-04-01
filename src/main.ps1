@@ -413,7 +413,7 @@ Quick Start:
 --config [FILEPATH]             loads the TOML config file from [FILEPATH] for
                                 operation. If the source is missing, this
                                 function will fail.
---text2-text [STRING]           operate text-to-text prompt.
+--text2text [STRING]            operate text-to-text prompt.
 `n
 "@
 		exit 0
