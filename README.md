@@ -60,10 +60,16 @@ alongside the required GPG key for future `apt update`.
 
 ### Flatpak
 
-*Coming Soon*
+1. Download the latest `.flatpak` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases)
+2. perform `$ flatpak --user install <package>.flatpak`.
 
-Note that the command to use is: `flatpak run [TBD] ...` due to how Flatpak
-works.
+Note that the command to use is:
+`flatpak run com.github.chewkeanho.app_hiai ...` due to how Flatpak works. For
+example, to get help, it is:
+
+`$ flatpak run com.github.chewkeanho.app_hiai --help`
+
+For direct installation in FlatHub, it's still work in progress.
 
 
 
