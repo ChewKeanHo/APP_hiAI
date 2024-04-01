@@ -9,6 +9,13 @@ Turn every computer's terminal into an interactive AI prompt.
 [![hollowayHIAI-demo-debian](src/screenshots/hiAI-demo-debian.gif)](#holloways-hiai)
 
 
+> [!important]
+>
+> Special thanks to [Google](https://gemini.google.com/) for sponsoring its
+> [Google Gemini Advanced Ultra](https://ai.google.dev/pricing) services allowing
+> this app to be possibly realized.
+
+
 
 
 ## Why It Matters
@@ -43,7 +50,7 @@ The software is packaged based on available OSes.
 1. Download the latest `.deb` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases)
 2. perform `$ dpkg -i <package>.deb`.
 
-Don't worry, the package will setup the upstream apt repository list source
+Don't worry, the package will setup the upstream `apt` repository list source
 alongside the required GPG key for future `apt update`.
 
 
@@ -53,7 +60,7 @@ alongside the required GPG key for future `apt update`.
 1. Download the latest `.rpm` package from the [release section](https://github.com/ChewKeanHo/APP_hiAI/releases)
 2. perform `$ rpm -i <package>.rpm`.
 
-Don't worry, the package will setup the upstream apt repository list source
+Don't worry, the package will setup the upstream `yum` repository list source
 alongside the required GPG key for future `apt update`.
 
 
@@ -87,7 +94,7 @@ For direct installation in FlatHub, it's still work in progress.
 
 ### Docker / Podman
 
-The Docker version is hosted on
+The container distribution is hosted on
 [GitHub Packages](https://github.com/ChewKeanHo/APP_hiAI/pkgs/container/hollowayhiai).
 Please keep in mind that the packages section is continuously updated with
 development so the catalog can be confusing (e.g. you may see some development
@@ -102,18 +109,19 @@ $ docker pull ghcr.io/chewkeanho/hollowayhiai:latest
 
 # $ docker pull ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
 # Example for `v0.0.2`:
-# $ docker pull ghcr.io/chewkeanho/hollowayhiai:0.0.2
+$ docker pull ghcr.io/chewkeanho/hollowayhiai:0.0.2
 ```
 
 To run with Docker, you need to mount your config file and execute using the
 `ARGS` environment variables. The `--config` argument **MUST** match with
-the pathing you mounted to. For example:
+the pathing you mounted to (`target=`). For example:
 
 ```
 # note - '-it' must always be the last argument
 $ docker run --env ARGS="--config /CONFIG.toml --text2text 'Who are you?'" \
-	--mount type=bind,source="${HOME}/CONFIG.toml",target="/CONFIG.toml" \
+	--mount type=bind,source="/path/to/CONFIG.toml",target="/CONFIG.toml" \
 	-it ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
+
 
 # to call for help
 $ docker run --env ARGS="--help" ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOUT_V_PREFIX]
@@ -125,15 +133,16 @@ $ docker run --env ARGS="--help" ghcr.io/chewkeanho/hollowayhiai:[VERSION_WITHOU
 
 Use the `tar.gz` package or `zip` package on Windows OS.
 
-Note that the command to use is: `hollowayhiai_[OS]-[ARCH].sh.ps1` instead of
-the `hollowayHIAI` sine you're executing directly from the script.
+Note that the command to use is: `hollowayhiai_[OS]-[ARCH].sh.ps1` (with file
+extensions) instead of the guided `hollowayHIAI` since you're executing directly
+from the script.
 
 
 
 
 ## How-tos, Documentations & Specifications
 
-To use HiAI, you need to first setup 1-time `CONFIG.toml` file:
+To use Holloway's HiAI, you need to first setup 1-time `CONFIG.toml` file:
 
 ```
 # UNIX (Linux & MacOS) - POSIX Shell
@@ -161,7 +170,7 @@ $ powershell.exe -noprofile `
 	-Command "& .\hollowayhiai_windows-[ARCH].sh.ps1 --config path\to\file.toml --text2text `"...your prompt...`""
 ```
 
-In any cases, if you need an on-screen assistances:
+In any cases, if you need any on-screen assistances:
 ```
 # UNIX (Linux & MacOS) - POSIX Shell
 $ hollowayHIAI --help
@@ -199,16 +208,6 @@ A small token purchase would helps a lot.
 
 If you wish to bring in codes contribution, bug report, and ideas, please feel
 free to refer the PDF Handbook and execute accordingly.
-
-
-
-### Special Thanks
-
-Special thanks to:
-
-1. [Google](https://gemini.google.com/) for sponsoring its
-[Google Gemini Advanced Ultra](https://ai.google.dev/pricing) services
-for making this app possible.
 
 
 
